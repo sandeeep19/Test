@@ -1,4 +1,4 @@
-Amplify Sdk at staging
+Amplify Sdk 
 ====
 
  Amplify is a  customer relationship management  for web app owners
