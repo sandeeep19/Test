@@ -42,6 +42,10 @@ if (!function_exists('http_build_query')) {
     throw new Exception('Amplify PHP SDK requires http_build_query()');
 }
 
+if (!file_exists('spider.txt')) {
+    throw new Exception('Amplify PHP SDK requires spider.txt');
+}
+
 /**
  * amplify.to API 
  */
