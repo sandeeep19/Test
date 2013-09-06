@@ -111,6 +111,17 @@ class Amplify {
     private $debug = false;
 
     /**
+     *  If the spider text is found in the current user agent, then return true
+     */
+    private $botDetect = false;
+    
+     /**
+     * gettting device info
+     */
+    private $botDetect = false;
+    
+
+    /**
      * function end point mapping
      */
     protected $functionUrlMap = array(
@@ -119,8 +130,6 @@ class Amplify {
         'update' => 'user/update/',
         'add' => 'user/add/'
     );
-
-   
 
     /**
      * The constructor
@@ -136,6 +145,7 @@ class Amplify {
         $this->setApiSecret($apiSecret);
         $this->setTimeStamp(time());
         $this->setOtt();
+        $this->_bot_detected();
         $this->debug = $debug;
     }
 
@@ -252,27 +262,31 @@ class Amplify {
     }
 
     function http_call($functionName, $argumentsArray) {
-        $apiKey = $this->getApiKey();
-        $apiSecret = $this->getApiSecret();
-        if (empty($apiKey))
-            throw new Exception("Invalid Api call, Api key must be provided!");
-        if (empty($apiSecret))
-            throw new Exception("Invalid Api call, Api Secret must be provided!");
-        if (!isset($this->functionUrlMap[$functionName]))
-            throw new Exception("Invalid Function call!");
-        try {
-            $requestUrl = $this->getPublicationUrl() . $this->functionUrlMap[$functionName]; //there should be error handling to make sure function name exist
-            if (isset($argumentsArray[0]) && is_array($argumentsArray[0]) && count($argumentsArray[0]) > 0)
-                $this->makeParams($argumentsArray[0]);
-            else
-                $this->makeParams();
-            $requestUrl.="?" . $this->getParams();
-            $this->setRequestUrl($requestUrl);
-            $this->signString();
-            $requestUrl = $this->getRequestUrl() . "&hash=" . $this->getHash();
-            return $this->makeRequest($requestUrl);
-        } catch (Exception $ex) {
-            throw new Exception($ex->getCode() . ":" . $ex->getMessage());
+        if (!$this->botDetect) {
+            $apiKey = $this->getApiKey();
+            $apiSecret = $this->getApiSecret();
+            if (empty($apiKey))
+                throw new Exception("Invalid Api call, Api key must be provided!");
+            if (empty($apiSecret))
+                throw new Exception("Invalid Api call, Api Secret must be provided!");
+            if (!isset($this->functionUrlMap[$functionName]))
+                throw new Exception("Invalid Function call!");
+            try {
+                $requestUrl = $this->getPublicationUrl() . $this->functionUrlMap[$functionName]; //there should be error handling to make sure function name exist
+                if (isset($argumentsArray[0]) && is_array($argumentsArray[0]) && count($argumentsArray[0]) > 0)
+                    $this->makeParams($argumentsArray[0]);
+                else
+                    $this->makeParams();
+                $requestUrl.="?" . $this->getParams();
+                $this->setRequestUrl($requestUrl);
+                $this->signString();
+                $requestUrl = $this->getRequestUrl() . "&hash=" . $this->getHash();
+                return $this->makeRequest($requestUrl);
+            } catch (Exception $ex) {
+                throw new Exception($ex->getCode() . ":" . $ex->getMessage());
+            }
+        } else {
+            return false;
         }
     }
 
@@ -368,7 +382,25 @@ class Amplify {
         $this->http_call('add', $argumentsArray);
     }
 
-   
+    private function _bot_detected() {
+
+        if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
+            $this->botDetect = true;
+        } else {
+            $spiderString = file_get_contents('spider.txt');
+            $spiders = explode(",", base64_decode($spiderString));
+            foreach ($spiders as $spider) {
+                //If the spider text is found in the current user agent, then return true
+                if (stripos($_SERVER['HTTP_USER_AGENT'], $spider) !== false)
+                    $this->botDetect = true;
+            }
+            //If it gets this far then no bot was found!
+        }
+    }
+    
+    private  function deviceDetector(){
+        
+    }
 
 }
 
