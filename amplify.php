@@ -19,8 +19,8 @@
  * <code>
  * <?php
  * $amplify = new Amplify('dummy_app_key','dummy_app_secret','dummy_project_id');
- * $users = $intercom->getAllUsers();
- * var_dump($users);
+ * amplify->identify(`sandeep@socialaxishq.com`,‘Sandeep’);
+ *
  * ?>
  * </code>
  * 
