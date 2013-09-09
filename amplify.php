@@ -68,6 +68,11 @@ class Amplify {
      *  
      */
     protected $requestUrl;
+    /*
+     * the amplify custom URL
+     *  
+     */
+    protected $publicationUrl;
 
     /**
      * amplify host
