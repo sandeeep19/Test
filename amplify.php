@@ -127,7 +127,9 @@ class Amplify {
         'update' => 'user/update/',
         'add' => 'user/add/'
     );
-    
+   /**
+     * function end point mapping
+     */ 
  protected   $spiders = array("seek","accoona","acoon","adressendeutschland","ah-ha.com","ahoy","altavista","ananzi","anthill","appie","arachnophilia","arale","araneo","aranha","architext","aretha","arks",
         "asterias",
         "atlocal",
