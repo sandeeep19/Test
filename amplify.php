@@ -132,7 +132,8 @@ class Amplify {
         'identify' => 'user/identify/',
         'event' => 'user/event/',
         'update' => 'user/update/',
-        'add' => 'user/add/'
+        'add' => 'user/add/',
+        'verify' => 'client/verify/'
     );
 
     /**
@@ -692,6 +693,16 @@ class Amplify {
         return $result;
     }
 
+     /*
+     * check api key and api secret  
+     * amplify->update(`sandeep@socialaxishq.com`,array('country'=>’India’,'city'=>’Noida’));
+     */
+
+    public function verify() {
+        $this->http_call('verify');
+    }
+    
+    
     /*
      * Identify system user if it unknowm leave parameter blank
      * amplify->identify(`sandeep@socialaxishq.com`,‘Sandeep’);
