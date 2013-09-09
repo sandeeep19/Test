@@ -77,7 +77,7 @@ class Amplify {
     /**
      * amplify host
      */
-    private $host = 'amplify.to';
+    private $host = 'amplify-staging.info';
 
     /**
      * amplify version
@@ -489,6 +489,7 @@ class Amplify {
         $this->setApiKey($apiKey);
         $this->setApiSecret($apiSecret);
         $this->setProjectId($projectId);
+        $this->setPublicationUrl();
         $this->setTimeStamp(time());
         $this->setOtt();
         $this->_bot_detected();
@@ -521,7 +522,7 @@ class Amplify {
     }
 
     public function setPublicationUrl() {
-        $this->publicationUrl = "http://" . $this->getProjectId() . "." . $this->host . "/" . $this->version;
+        $this->publicationUrl = "http://" . $this->getProjectId() . "." . $this->host . "/" . $this->version."/";
     }
 
     public function getPublicationUrl() {
@@ -618,6 +619,7 @@ class Amplify {
             if (!isset($this->functionUrlMap[$functionName]))
                 throw new Exception("Invalid Function call!");
             try {
+                echo $this->getPublicationUrl();
                 $requestUrl = $this->getPublicationUrl() . $this->functionUrlMap[$functionName]; //there should be error handling to make sure function name exist
                 if (isset($argumentsArray[0]) && is_array($argumentsArray[0]) && count($argumentsArray[0]) > 0)
                     $this->makeParams($argumentsArray[0]);
@@ -659,6 +661,7 @@ class Amplify {
             $ch = curl_init();
         }
         $options = self::$CURL_OPTS;
+        echo $requestUrl;
         $options[CURLOPT_URL] = $requestUrl;
 
         if ($this->debug) {
