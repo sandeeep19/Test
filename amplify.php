@@ -480,9 +480,10 @@ class Amplify {
      * @param  string $debug  Optional debug flag
      * @return void
      * */
-    public function __construct($apiKey, $apiSecret, $debug = false) {
+    public function __construct($apiKey, $apiSecret,$projectId, $debug = false) {
         $this->setApiKey($apiKey);
         $this->setApiSecret($apiSecret);
+        $this->setProjectId($projectId);
         $this->setTimeStamp(time());
         $this->setOtt();
         $this->_bot_detected();
