@@ -497,7 +497,6 @@ class Amplify {
         $this->setPublicationUrl();
         $this->setTimeStamp(time());
         $this->setOtt();
-        $this->_bot_detected();
         $this->debug = $debug;
     }
 
@@ -614,6 +613,7 @@ class Amplify {
     }
 
     function http_call($functionName, $argumentsArray) {
+        $this->_bot_detected();
         if (!$this->botDetect) {
             $apiKey = $this->getApiKey();
             $apiSecret = $this->getApiSecret();
@@ -624,6 +624,7 @@ class Amplify {
             if (!isset($this->functionUrlMap[$functionName]))
                 throw new Exception("Invalid Function call!");
             try {
+                $this->deviceDetector();
                 $requestUrl = $this->getPublicationUrl() . $this->functionUrlMap[$functionName]; //there should be error handling to make sure function name exist
                 if (isset($argumentsArray) && is_array($argumentsArray) && count($argumentsArray) > 0) {
                     $argumentsArray['device'] = $this->deviceDetect;
