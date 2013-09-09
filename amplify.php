@@ -694,8 +694,8 @@ class Amplify {
     }
 
      /*
-     * check api key and api secret  
-     * amplify->update(`sandeep@socialaxishq.com`,array('country'=>’India’,'city'=>’Noida’));
+     * check api key and api secret are valid  
+     * amplify->verify();
      */
 
     public function verify() {
