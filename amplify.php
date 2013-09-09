@@ -699,7 +699,7 @@ class Amplify {
      */
 
     public function verify() {
-        $this->http_call('verify');
+        return $this->http_call('verify');
     }
     
     
@@ -716,6 +716,7 @@ class Amplify {
         if ($response->responseCode == '200') {
             setcookie($_SERVER['SERVER_NAME'], $response->amplifySession, time() + 604800, "/", $_SERVER['SERVER_NAME']);
         }
+        return $response;
     }
 
     /*
@@ -725,7 +726,7 @@ class Amplify {
 
     public function event($email, $eventArray) {
         $argumentsArray = array('email' => $email, 'event' => $eventArray);
-        $this->http_call('event', $argumentsArray);
+        return $this->http_call('event', $argumentsArray);
     }
 
     /*
@@ -735,7 +736,7 @@ class Amplify {
 
     public function update($email, $propetyArray) {
         $argumentsArray = array('email' => $email, 'properties' => $propetyArray);
-        $this->http_call('update', $argumentsArray);
+        return $this->http_call('update', $argumentsArray);
     }
 
     /*
@@ -745,7 +746,7 @@ class Amplify {
 
     public function add($email, $propetyArray) {
         $argumentsArray = array('email' => $email, 'properties' => $propetyArray);
-        $this->http_call('add', $argumentsArray);
+        return $this->http_call('add', $argumentsArray);
     }
 
     private function _bot_detected() {
