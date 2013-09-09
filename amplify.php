@@ -42,7 +42,6 @@ if (!function_exists('http_build_query')) {
     throw new Exception('Amplify PHP SDK requires http_build_query()');
 }
 
-
 /**
  * amplify.to API 
  */
@@ -115,12 +114,16 @@ class Amplify {
     /**
      *  If the spider text is found in the current user agent, then return true
      */
-    
-     /**
+
+    /**
      * gettting device info
      */
     private $botDetect = false;
-    
+
+    /**
+     * gettting device info
+     */
+    private $deviceDetect = 1;
 
     /**
      * function end point mapping
@@ -131,10 +134,11 @@ class Amplify {
         'update' => 'user/update/',
         'add' => 'user/add/'
     );
-   /**
+
+    /**
      * spider array used to call is not human
-     */ 
- protected   $spiders = array("seek","accoona","acoon","adressendeutschland","ah-ha.com","ahoy","altavista","ananzi","anthill","appie","arachnophilia","arale","araneo","aranha","architext","aretha","arks",
+     */
+    protected $spiders = array("seek", "accoona", "acoon", "adressendeutschland", "ah-ha.com", "ahoy", "altavista", "ananzi", "anthill", "appie", "arachnophilia", "arale", "araneo", "aranha", "architext", "aretha", "arks",
         "asterias",
         "atlocal",
         "atn",
@@ -476,6 +480,7 @@ class Amplify {
         "zyborg",
         "...."
     );
+
     /**
      * The constructor
      *
@@ -485,7 +490,7 @@ class Amplify {
      * @param  string $debug  Optional debug flag
      * @return void
      * */
-    public function __construct($apiKey, $apiSecret,$projectId, $debug = false) {
+    public function __construct($apiKey, $apiSecret, $projectId, $debug = false) {
         $this->setApiKey($apiKey);
         $this->setApiSecret($apiSecret);
         $this->setProjectId($projectId);
@@ -522,7 +527,7 @@ class Amplify {
     }
 
     public function setPublicationUrl() {
-        $this->publicationUrl = "http://" . $this->getProjectId() . "." . $this->host . "/" . $this->version."/";
+        $this->publicationUrl = "http://" . $this->getProjectId() . "." . $this->host . "/" . $this->version . "/";
     }
 
     public function getPublicationUrl() {
@@ -620,8 +625,10 @@ class Amplify {
                 throw new Exception("Invalid Function call!");
             try {
                 $requestUrl = $this->getPublicationUrl() . $this->functionUrlMap[$functionName]; //there should be error handling to make sure function name exist
-                if (isset($argumentsArray) && is_array($argumentsArray) && count($argumentsArray) > 0)
+                if (isset($argumentsArray) && is_array($argumentsArray) && count($argumentsArray) > 0) {
+                    $argumentsArray['device'] = $this->deviceDetect;
                     $this->makeParams($argumentsArray);
+                }
                 else
                     $this->makeParams();
                 $requestUrl.="?" . $this->getParams();
@@ -734,22 +741,34 @@ class Amplify {
         if (isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])) {
             $this->botDetect = true;
         } else {
-           
+
             foreach ($this->spiders as $spider) {
-                //If the spider text is found in the current user agent, then return true
+//If the spider text is found in the current user agent, then return true
                 if (stripos($_SERVER['HTTP_USER_AGENT'], $spider) !== false)
                     $this->botDetect = true;
             }
-            //If it gets this far then no bot was found!
+//If it gets this far then no bot was found!
         }
     }
-    
-    private  function deviceDetector(){
-        
+
+    protected function deviceDetector() {
+        if (stripos($_SERVER['HTTP_USER_AGENT'], "Android") && stripos($_SERVER['HTTP_USER_AGENT'], "mobile")) {
+            $this->deviceDetect = 2;
+        } else if (stripos($_SERVER['HTTP_USER_AGENT'], "Android")) {
+            $this->deviceDetect = 3;
+        } else if (stripos($_SERVER['HTTP_USER_AGENT'], "iPhone")) {
+            $this->deviceDetect = 4;
+        } else if (stripos($_SERVER['HTTP_USER_AGENT'], "iPad")) {
+            $this->deviceDetect = 5;
+        } else if (stripos($_SERVER['HTTP_USER_AGENT'], "mobile")) {
+            $this->deviceDetect = 6;
+        } else if (stripos($_SERVER['HTTP_USER_AGENT'], "tablet")) {
+            $this->deviceDetect = 7;
+        } else {
+            $this->deviceDetect = 1;
+        }
     }
 
-    
-    
 }
 
 ?>
