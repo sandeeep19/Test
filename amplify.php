@@ -110,7 +110,6 @@ class Amplify {
     /**
      *  If the spider text is found in the current user agent, then return true
      */
-    private $botDetect = false;
     
      /**
      * gettting device info
