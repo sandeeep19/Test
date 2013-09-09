@@ -128,7 +128,7 @@ class Amplify {
         'add' => 'user/add/'
     );
    /**
-     * spider array used to call is not crawler
+     * spider array used to call is not human
      */ 
  protected   $spiders = array("seek","accoona","acoon","adressendeutschland","ah-ha.com","ahoy","altavista","ananzi","anthill","appie","arachnophilia","arale","araneo","aranha","architext","aretha","arks",
         "asterias",
