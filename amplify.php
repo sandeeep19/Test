@@ -619,10 +619,9 @@ class Amplify {
             if (!isset($this->functionUrlMap[$functionName]))
                 throw new Exception("Invalid Function call!");
             try {
-                echo $this->getPublicationUrl();
                 $requestUrl = $this->getPublicationUrl() . $this->functionUrlMap[$functionName]; //there should be error handling to make sure function name exist
-                if (isset($argumentsArray[0]) && is_array($argumentsArray[0]) && count($argumentsArray[0]) > 0)
-                    $this->makeParams($argumentsArray[0]);
+                if (isset($argumentsArray) && is_array($argumentsArray) && count($argumentsArray) > 0)
+                    $this->makeParams($argumentsArray);
                 else
                     $this->makeParams();
                 $requestUrl.="?" . $this->getParams();
@@ -661,7 +660,6 @@ class Amplify {
             $ch = curl_init();
         }
         $options = self::$CURL_OPTS;
-        echo $requestUrl;
         $options[CURLOPT_URL] = $requestUrl;
 
         if ($this->debug) {
