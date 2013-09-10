@@ -693,16 +693,16 @@ class Amplify {
         return $result;
     }
 
-     /*
+    /*
      * check api key and api secret are valid  
      * amplify->verify();
      */
 
     public function verify() {
-        return $this->http_call('verify');
+        $argumentsArray = array('apiSecert' => $this->apiSecret);
+        return $this->http_call('verify', $argumentsArray);
     }
-    
-    
+
     /*
      * Identify system user if it unknowm leave parameter blank
      * amplify->identify(`sandeep@socialaxishq.com`,‘Sandeep’);
