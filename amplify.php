@@ -699,7 +699,7 @@ class Amplify {
      */
 
     public function verify() {
-        $argumentsArray = array('apiSecert' => $this->apiSecret);
+        $argumentsArray = array('apiSecret' => $this->apiSecret);
         return $this->http_call('verify', $argumentsArray);
     }
 
